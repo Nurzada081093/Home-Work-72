@@ -1,8 +1,12 @@
 import { Button, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { IFormDish } from '../../types';
 import { toast } from 'react-toastify';
+
+interface Props {
+  onSubmitDish: (dish: IFormDish) => void;
+}
 
 const initialState = {
   title: '',
@@ -10,7 +14,7 @@ const initialState = {
   image: '',
 };
 
-const DishForm = () => {
+const DishForm: React.FC<Props> = ({onSubmitDish}) => {
   const [newDish, setNewDish] = useState<IFormDish>(initialState);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +34,10 @@ const DishForm = () => {
       toast.error('If you want to add a new dish, please fill out all fields!');
       toast.error('The price of the dish should be more than 0!');
     } else {
-      console.log(newDish);
+      onSubmitDish({
+        ...newDish,
+        price: Number(newDish.price),
+      });
     }
 
     setNewDish(initialState);
