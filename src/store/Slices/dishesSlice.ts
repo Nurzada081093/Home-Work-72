@@ -1,9 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IFormDish } from '../../types';
-import { createDish } from '../Thunks/dishesThunk.ts';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IDish, IFormDish } from '../../types';
+import { createDish, deleteDish, getDishes, getOneDish } from '../Thunks/dishesThunk.ts';
+import { RootState } from '../../app/store.ts';
 
 interface InitialState {
-  dishes: IFormDish[];
+  dishes: IDish[];
   dish: IFormDish | null;
   isLoading: {
     createLoading: boolean;
@@ -28,6 +29,8 @@ const initialState: InitialState = {
   error: false,
 };
 
+export const allDishes = (state: RootState) => state.dishes.dishes;
+
 export const dishesSlice = createSlice({
   name: 'dishes',
   initialState,
@@ -45,8 +48,47 @@ export const dishesSlice = createSlice({
       .addCase(createDish.rejected, (state) => {
         state.isLoading.createLoading = false;
         state.error = true;
+      })
+      .addCase(getDishes.pending, (state) => {
+        state.isLoading.getLoading = true;
+        state.error = false;
+      })
+      .addCase(getDishes.fulfilled, (state, action: PayloadAction<IDish[]>) => {
+        state.isLoading.getLoading = false;
+        state.error = false;
+        state.dishes = action.payload;
+      })
+      .addCase(getDishes.rejected, (state) => {
+        state.isLoading.getLoading = false;
+        state.error = true;
+      })
+      .addCase(deleteDish.pending, (state) => {
+        state.isLoading.deleteLoading = true;
+        state.error = false;
+      })
+      .addCase(deleteDish.fulfilled, (state) => {
+        state.isLoading.deleteLoading = false;
+        state.error = false;
+      })
+      .addCase(deleteDish.rejected, (state) => {
+        state.isLoading.deleteLoading = false;
+        state.error = true;
+      })
+      .addCase(getOneDish.pending, (state) => {
+        state.isLoading.getOneDishLoading = true;
+        state.error = false;
+      })
+      .addCase(getOneDish.fulfilled, (state, action: PayloadAction<IFormDish | null>) => {
+        state.isLoading.getOneDishLoading = false;
+        state.error = false;
+        state.dish = action.payload;
+      })
+      .addCase(getOneDish.rejected, (state) => {
+        state.isLoading.getOneDishLoading = false;
+        state.error = true;
       });
   }
 });
+
 
 export const dishesReducer = dishesSlice.reducer;

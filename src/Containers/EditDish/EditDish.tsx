@@ -1,7 +1,12 @@
 import DishForm from '../../Components/DishForm/DishForm.tsx';
+import { IFormDish } from '../../types';
 
 const EditDish = () => {
-  const onSubmitDish = () => {};
+
+
+  const onSubmitDish = (dish: IFormDish) => {
+    console.log(dish);
+  };
 
   return (
     <div>
