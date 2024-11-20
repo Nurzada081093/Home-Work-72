@@ -33,7 +33,6 @@ const EditDish = () => {
 
   return (
     <div>
-      <h1>Edit Dish</h1>
       {dish && <DishForm onSubmitDish={onSubmitDish} dishInitial={dish} editDish/>}
     </div>
   );

@@ -6,7 +6,7 @@ import Typography from '@mui/joy/Typography';
 import ModalClose from '@mui/joy/ModalClose';
 import React, { MouseEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { dishCardToDelete, userCards } from '../../store/Slices/userCartDishSlices.ts';
+import { dishCardToDelete, userCards } from '../../store/Slices/ordersSlices.ts';
 import { RiDeleteBin5Fill } from 'react-icons/ri';
 import IconButton from '@mui/joy/IconButton';
 
@@ -17,11 +17,11 @@ interface Props {
 }
 
 const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
-  const cardWithDishes = useAppSelector(userCards);
+  const orders = useAppSelector(userCards);
   const dispatch = useAppDispatch();
 
-  const totalPrise = cardWithDishes.reduce((acc, dish) => {
-    acc = acc + dish.cardDish.price * dish.amount;
+  const totalPrise = orders.reduce((acc, order) => {
+    acc = acc + order.orderDish.price * order.amount;
     return acc;
   }, 150);
 
@@ -48,19 +48,19 @@ const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
         <Typography sx={{fontSize: '25px', fontWeight: '600', textAlign: 'center', marginBottom: '10px'}}>Your order:</Typography>
         <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
           <Box sx={{width: '380px', padding: '0 20px'}}>
-            {cardWithDishes.length !== 0 ?
-              cardWithDishes.map(dish => (
-              <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} key={dish.cardDish.id}>
+            {orders.length !== 0 ?
+              orders.map(order => (
+              <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} key={order.orderDish.id}>
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '50%'}}>
-                  <Typography level="title-md">{dish.cardDish.title}</Typography>
-                  <Typography level="title-md"> x {dish.amount}</Typography>
+                  <Typography level="title-md">{order.orderDish.title}</Typography>
+                  <Typography level="title-md"> x {order.amount}</Typography>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                  <Typography sx={{marginRight: '10px'}}><b>{dish.cardDish.price} KGS</b></Typography>
+                  <Typography sx={{marginRight: '10px'}}><b>{order.orderDish.price} KGS</b></Typography>
                   <IconButton
                     color="neutral"
                     size="sm"
-                    onClick={() => dispatch(dishCardToDelete(dish.cardDish))}
+                    onClick={() => dispatch(dishCardToDelete(order.orderDish))}
                   >
                     <RiDeleteBin5Fill />
                   </IconButton>
@@ -82,7 +82,7 @@ const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
                 gap: 1
               }}
             >
-              <Button variant="solid" color="primary" sx={{width: '110px'}} onClick={sendOrder}>
+              <Button disabled={orders.length === 0} variant="solid" color="primary" sx={{width: '110px'}} onClick={sendOrder}>
                 Order
               </Button>
               <Button

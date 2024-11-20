@@ -13,6 +13,10 @@ export interface APIDish {
 }
 
 export interface IDishCart {
-  cardDish: IDish;
+  orderDish: IDish;
   amount: number;
+}
+
+export interface IOrderDish {
+  [id: string] : number;
 }

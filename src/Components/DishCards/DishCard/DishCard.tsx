@@ -3,7 +3,7 @@ import Typography from '@mui/joy/Typography';
 import { IDish } from '../../../types';
 import React from 'react';
 import { useAppDispatch } from '../../../app/hooks.ts';
-import { dishCardToAdd } from '../../../store/Slices/userCartDishSlices.ts';
+import { dishCardToAdd } from '../../../store/Slices/ordersSlices.ts';
 import { Button } from '@mui/joy';
 
 interface Props {

@@ -6,7 +6,7 @@ import { Container } from '@mui/joy';
 import DishCards from '../../Components/DishCards/DishCards.tsx';
 import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
-import { userCards } from '../../store/Slices/userCartDishSlices.ts';
+import { userCards } from '../../store/Slices/ordersSlices.ts';
 import { Button } from '@mui/material';
 import ModalWindow from '../../Components/ModalWindow/ModalWindow.tsx';
 import { useNavigate } from 'react-router-dom';
@@ -27,8 +27,8 @@ const Home = () => {
     void getAllDishes();
   }, [getAllDishes]);
 
-  const totalPrise = cardWithDishes.reduce((acc, dish) => {
-    acc = acc + dish.cardDish.price * dish.amount;
+  const totalPrise = cardWithDishes.reduce((acc, order) => {
+    acc = acc + order.orderDish.price * order.amount;
     return acc;
   }, 0);
 
@@ -41,8 +41,18 @@ const Home = () => {
     navigate('/');
   };
 
-  const sendOrder = () => {
+  const sendOrder = async () => {
     console.log('Отправка заказов на сервер!');
+    const userOrder = cardWithDishes.map((order) => {
+      return {
+        [order.orderDish.id] : order.amount,
+      };
+    });
+
+    // await dispatch(createOrder(userOrder));
+
+    console.log(userOrder);
+
     closeModal();
   };
 
