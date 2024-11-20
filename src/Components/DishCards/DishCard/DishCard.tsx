@@ -2,23 +2,26 @@ import Card from '@mui/joy/Card';
 import Typography from '@mui/joy/Typography';
 import { IDish } from '../../../types';
 import React from 'react';
-import Box from '@mui/joy/Box';
+import { useAppDispatch } from '../../../app/hooks.ts';
+import { dishCardToAdd } from '../../../store/Slices/userCartDishSlices.ts';
+import { Button } from '@mui/joy';
 
 interface Props {
   dish: IDish;
 }
 
 const DishCard: React.FC<Props> = ({dish}) => {
+  const image = "https://jkdigisol.com/wp-content/uploads/2023/08/how-to-find-and-fix-404-errors-in-wordpress.png.webp";
+  const dispatch = useAppDispatch();
+
   return (
-    <Card variant="outlined" sx={{width: '60%', margin: '20px auto'}}>
-      <Box sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
-        <img style={{width: '200px', height: '120px'}} src={dish.image} alt={dish.title}/>
-        <Box sx={{marginTop: '10px', width: '55%', display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', marginLeft: '30px'}}>
-          <Typography sx={{fontSize: '20px', fontWeight: '600'}}>{dish.title}</Typography>
-          <Typography>{dish.price} KGS</Typography>
-        </Box>
-      </Box>
-    </Card>
+    <>
+      <Card variant="outlined" sx={{width: '280px', margin: '20px 5px', textAlign: 'center'}} onClick={() => dispatch(dishCardToAdd(dish))}>
+        <img style={{width: '100%', height: '150px'}} src={dish.image ? dish.image : image} alt={dish.title}/>
+        <Typography sx={{width: '95%', fontSize: '25px', fontWeight: '600'}}>{dish.title}</Typography>
+        <Button sx={{backgroundColor: '#3949ab', fontSize: '18px'}}>{dish.price} KGS</Button>
+      </Card>
+    </>
   );
 };
 

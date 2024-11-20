@@ -9,7 +9,7 @@ interface Props {
 
 const DishCards: React.FC<Props> = ({dishes}) => {
   return (
-    <Box sx={{margin: '10px'}}>
+    <Box sx={{margin: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexWrap: 'wrap'}}>
       {dishes.map((dish) => (
         <DishCard key={dish.id} dish={dish}/>
       ))}

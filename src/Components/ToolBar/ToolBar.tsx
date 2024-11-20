@@ -61,7 +61,9 @@ const ToolBar = () => {
               fontSize: '30px',
               fontStyle: 'italic',
               fontWeight: '600'
-            }}>Turtle Pizza Admin</NavLink>
+            }}>
+              {location.pathname !== '/' ? 'Turtle Pizza Admin' : 'Turtle Pizza'}
+            </NavLink>
           </Dropdown>
         </Box>
         {location.pathname !== '/' ?

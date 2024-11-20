@@ -11,3 +11,8 @@ export interface IDish extends IFormDish {
 export interface APIDish {
   [id: string] : IDish;
 }
+
+export interface IDishCart {
+  cardDish: IDish;
+  amount: number;
+}
