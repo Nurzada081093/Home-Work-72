@@ -5,12 +5,14 @@ import Admin from './Containers/Admin/Admin.tsx';
 import Orders from './Containers/Orders/Orders.tsx';
 import AddNewDish from './Containers/AddNewDish/AddNewDish.tsx';
 import EditDish from './Containers/EditDish/EditDish.tsx';
+import Home from './Containers/Home/Home.tsx';
 
 const App = () => {
 
   return (
     <Layout>
       <Routes>
+        <Route path="/" element={<Home/>}></Route>
         <Route path="/admin" element={<Admin/>}></Route>
         <Route path="/admin/dishes" element={<Admin/>}></Route>
         <Route path="/admin/orders" element={<Orders/>}></Route>

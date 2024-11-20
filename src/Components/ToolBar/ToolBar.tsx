@@ -8,10 +8,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
 import { useState } from 'react';
 import { Container } from '@mui/joy';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const ToolBar = () => {
   const [color, setColor] = useState<ColorPaletteProp>('primary');
+  const location = useLocation();
+
   return (
     <Sheet
       variant="solid"
@@ -62,8 +64,9 @@ const ToolBar = () => {
             }}>Turtle Pizza Admin</NavLink>
           </Dropdown>
         </Box>
-        <Box sx={{display: 'flex', flexShrink: 0, gap: 2, alignItems: 'center'}}>
-        <NavLink to={'/admin/dishes'} style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Dishes</NavLink>
+        {location.pathname !== '/' ?
+          <Box sx={{display: 'flex', flexShrink: 0, gap: 2, alignItems: 'center'}}>
+          <NavLink to={'/admin/dishes'} style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Dishes</NavLink>
           <NavLink to={'admin/orders'}  style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Orders</NavLink>
           <Badge badgeContent={2} variant="solid" color="danger">
             <IconButton variant="soft" sx={{borderRadius: '50%'}}>
@@ -71,6 +74,7 @@ const ToolBar = () => {
             </IconButton>
           </Badge>
         </Box>
+        : null}
       </Container>
     </Sheet>
   );
