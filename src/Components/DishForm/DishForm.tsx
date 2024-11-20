@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 
 interface Props {
   onSubmitDish: (dish: IFormDish) => void;
+  dishInitial?: IFormDish;
+  editDish?: boolean;
 }
 
 const initialState = {
@@ -14,8 +16,8 @@ const initialState = {
   image: '',
 };
 
-const DishForm: React.FC<Props> = ({onSubmitDish}) => {
-  const [newDish, setNewDish] = useState<IFormDish>(initialState);
+const DishForm: React.FC<Props> = ({onSubmitDish, dishInitial = initialState, editDish = false}) => {
+  const [newDish, setNewDish] = useState<IFormDish>(dishInitial);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -38,9 +40,11 @@ const DishForm: React.FC<Props> = ({onSubmitDish}) => {
         ...newDish,
         price: Number(newDish.price),
       });
-    }
 
-    setNewDish(initialState);
+      if (!editDish) {
+        setNewDish(initialState);
+      }
+    }
   };
 
   return (
@@ -54,8 +58,7 @@ const DishForm: React.FC<Props> = ({onSubmitDish}) => {
       marginTop: '30px'
     }}>
       <Typography variant="h4" sx={{flexGrow: 1, textAlign: 'center', marginBottom: '20px'}}>
-        {/*{isEdit ? 'Edit ' : 'Add new '} */}
-        dish
+        {editDish ? 'Edit ' : 'Add new '} dish
       </Typography>
       <Grid container spacing={2} sx={{mx: 'auto', width: '80%'}}>
         <Grid size={12}>

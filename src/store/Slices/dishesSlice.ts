@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IDish, IFormDish } from '../../types';
-import { createDish, deleteDish, getDishes, getOneDish } from '../Thunks/dishesThunk.ts';
+import { createDish, deleteDish, editDish, getDishes, getOneDish } from '../Thunks/dishesThunk.ts';
 import { RootState } from '../../app/store.ts';
 
 interface InitialState {
@@ -30,6 +30,7 @@ const initialState: InitialState = {
 };
 
 export const allDishes = (state: RootState) => state.dishes.dishes;
+export const oneDish = (state: RootState) => state.dishes.dish;
 
 export const dishesSlice = createSlice({
   name: 'dishes',
@@ -86,9 +87,21 @@ export const dishesSlice = createSlice({
       .addCase(getOneDish.rejected, (state) => {
         state.isLoading.getOneDishLoading = false;
         state.error = true;
+      })
+      .addCase(editDish.pending, (state) => {
+        state.isLoading.editLoading = true;
+        state.error = false;
+      })
+      .addCase(editDish.fulfilled, (state) => {
+        state.isLoading.editLoading = false;
+        state.error = false;
+        state.dish = null;
+      })
+      .addCase(editDish.rejected, (state) => {
+        state.isLoading.editLoading = false;
+        state.error = true;
       });
-  }
+   }
 });
-
 
 export const dishesReducer = dishesSlice.reducer;

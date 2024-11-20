@@ -42,3 +42,10 @@ export const getOneDish = createAsyncThunk<IFormDish | null, string>(
     return responseDish.data || null;
   }
 );
+
+export const editDish = createAsyncThunk<void, {id: string, dish: IFormDish}>(
+  'dishes/editDish',
+  async ({id, dish}) => {
+    await axiosRequest.put(`dishes/${id}.json`, {...dish});
+  }
+);
