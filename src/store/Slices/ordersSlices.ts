@@ -1,25 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IDish, IDishCart } from '../../types';
+import { APIOrder, IDish, IDishOrder } from '../../types';
 import { RootState } from '../../app/store.ts';
-import { createOrder } from '../Thunks/ordersThunks.ts';
+import { createOrder, getOrders } from '../Thunks/ordersThunks.ts';
 
 interface UserCartDishState {
-  orders: IDishCart[];
+  orders: IDishOrder[];
+  ordersFromAPI: APIOrder[];
   loading: {
     createLoading: boolean;
+    getLoading: boolean;
   };
   error: boolean;
 }
 
 const initialState: UserCartDishState = {
   orders: [],
+  ordersFromAPI: [],
   loading: {
     createLoading: false,
+    getLoading: false,
   },
   error: false,
 };
 
 export const userCards = (state: RootState) => state.orders.orders;
+export const userOrders = (state: RootState) => state.orders.ordersFromAPI;
 
 const ordersSlice = createSlice({
   name: 'orders',
@@ -81,9 +86,23 @@ const ordersSlice = createSlice({
       .addCase(createOrder.rejected, (state) => {
         state.loading.createLoading = false;
         state.error = true;
+      })
+      .addCase(getOrders.pending, (state) => {
+        state.loading.getLoading = true;
+        state.error = false;
+      })
+      .addCase(getOrders.fulfilled, (state, action: PayloadAction<APIOrder[]>) => {
+        state.loading.getLoading = false;
+        state.error = false;
+        state.ordersFromAPI = action.payload;
+      })
+      .addCase(getOrders.rejected, (state) => {
+        state.loading.getLoading = false;
+        state.error = true;
       });
   }
 });
+
 
 export const ordersReducer = ordersSlice.reducer;
 export const {dishCardToAdd, dishCardToDelete} = ordersSlice.actions;

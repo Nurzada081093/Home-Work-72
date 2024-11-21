@@ -47,7 +47,7 @@ const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
         </Box>
         <Typography sx={{fontSize: '25px', fontWeight: '600', textAlign: 'center', marginBottom: '10px'}}>Your order:</Typography>
         <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Box sx={{width: '380px', padding: '0 20px'}}>
+          <Box sx={{width: '500px', padding: '0 20px'}}>
             {orders.length !== 0 ?
               orders.map(order => (
               <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}} key={order.orderDish.id}>

@@ -22,8 +22,6 @@ const Admin = () => {
     void getAllDishes();
   }, [getAllDishes]);
 
-  console.log(dishes);
-
   return (
     <Container>
       <Box sx={{display: 'flex', justifyContent: 'space-between', margin: '50px 0 20px'}}>

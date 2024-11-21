@@ -10,6 +10,9 @@ import { userCards } from '../../store/Slices/ordersSlices.ts';
 import { Button } from '@mui/material';
 import ModalWindow from '../../Components/ModalWindow/ModalWindow.tsx';
 import { useNavigate } from 'react-router-dom';
+import { IOrderDish } from '../../types';
+import { createOrder } from '../../store/Thunks/ordersThunks.ts';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -20,7 +23,6 @@ const Home = () => {
 
   const getAllDishes = useCallback( async () => {
     await dispatch(getDishes());
-
   }, [dispatch]);
 
   useEffect(() => {
@@ -42,18 +44,14 @@ const Home = () => {
   };
 
   const sendOrder = async () => {
-    console.log('Отправка заказов на сервер!');
-    const userOrder = cardWithDishes.map((order) => {
-      return {
-        [order.orderDish.id] : order.amount,
-      };
-    });
+    const userOrder = cardWithDishes.reduce((acc: IOrderDish, dish) => {
+      acc[dish.orderDish.id] = dish.amount;
+      return acc;
+    }, {});
 
-    // await dispatch(createOrder(userOrder));
-
-    console.log(userOrder);
-
+    await dispatch(createOrder(userOrder));
     closeModal();
+    toast.success('Your order has been sent successfully!');
   };
 
   return (
