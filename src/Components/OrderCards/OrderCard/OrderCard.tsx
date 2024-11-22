@@ -2,12 +2,13 @@ import Card from '@mui/joy/Card';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
 import { IDishOrders } from '../../../types';
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/joy/Box';
 import { Button } from '@mui/material';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deleteOrder, getOrders } from '../../../store/Thunks/ordersThunks.ts';
 import { toast } from 'react-toastify';
+import ButtonSpinner from '../../UI/ButtonSpinner/ButtonSpinner.tsx';
 
 interface Props {
   order: IDishOrders;
@@ -15,6 +16,10 @@ interface Props {
 
 const OrderCard: React.FC<Props>  = ({order}) => {
   const dispatch = useAppDispatch();
+  const [deleteLoading, setDeleteLoading] = useState<{index: string | null; loading: boolean}>({
+    index: null,
+    loading: false,
+  });
 
   const totalPrice = order.dishes.reduce((acc, dish) => {
     acc += (dish.price * dish.amount);
@@ -22,9 +27,11 @@ const OrderCard: React.FC<Props>  = ({order}) => {
   }, 150);
 
   const deleteTheOrder = async (id: string) => {
+    setDeleteLoading(prevState => ({...prevState, loading: true, index: id}));
     await dispatch(deleteOrder(id));
     toast.success(`The order has been successfully deleted!`);
     await dispatch(getOrders());
+    setDeleteLoading(prevState => ({...prevState, loading: false, index: null}));
   };
 
   return (
@@ -56,7 +63,10 @@ const OrderCard: React.FC<Props>  = ({order}) => {
       <Box sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', width: '100%', justifyContent: 'space-around', borderTop: '1px solid lightgrey', padding: '10px 0'}}>
         <Typography level="body-md">Delivery: <Typography sx={{fontSize: 'lg', fontWeight: 'lg', marginLeft: '10px'}}>150 KGS</Typography></Typography>
         <Typography level="body-md" sx={{margin: '20px'}}>Total price: <Typography sx={{fontSize: 'lg', fontWeight: 'lg', marginLeft: '10px'}}>{totalPrice} KGS</Typography></Typography>
-        <Button variant="text" sx={{color: 'black'}} onClick={() => deleteTheOrder(order.id)}>Complete order</Button>
+        <Button variant="text" disabled={deleteLoading.loading && order.id === deleteLoading.index} onClick={() => deleteTheOrder(order.id)}>
+          Complete order
+          {deleteLoading.loading && order.id === deleteLoading.index ? <ButtonSpinner/> : null}
+        </Button>
       </Box>
     </Card>
   );

@@ -6,9 +6,10 @@ import Typography from '@mui/joy/Typography';
 import ModalClose from '@mui/joy/ModalClose';
 import React, { MouseEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { dishCardToDelete, userCards } from '../../store/Slices/ordersSlices.ts';
+import { addLoadingSlice, dishCardToDelete, userCards } from '../../store/Slices/ordersSlices.ts';
 import { RiDeleteBin5Fill } from 'react-icons/ri';
 import IconButton from '@mui/joy/IconButton';
+import ButtonSpinner from '../UI/ButtonSpinner/ButtonSpinner.tsx';
 
 interface Props {
   showModal: boolean;
@@ -18,6 +19,7 @@ interface Props {
 
 const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
   const orders = useAppSelector(userCards);
+  const addLoading = useAppSelector(addLoadingSlice);
   const dispatch = useAppDispatch();
 
   const totalPrise = orders.reduce((acc, order) => {
@@ -82,11 +84,12 @@ const ModalWindow: React.FC<Props> = ({showModal, closeModal, sendOrder}) => {
                 gap: 1
               }}
             >
-              <Button disabled={orders.length === 0} variant="solid" color="primary" sx={{width: '110px'}} onClick={sendOrder}>
+              <Button disabled={orders.length === 0 || addLoading} variant="solid" color="primary" sx={{width: '150px'}} onClick={sendOrder}>
                 Order
+                {addLoading ? <ButtonSpinner/> : null}
               </Button>
               <Button
-                sx={{width: '110px'}}
+                sx={{width: '150px'}}
                 variant="solid"
                 color="danger"
                 onClick={closeModal}

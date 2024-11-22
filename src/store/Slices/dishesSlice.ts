@@ -31,6 +31,10 @@ const initialState: InitialState = {
 
 export const allDishes = (state: RootState) => state.dishes.dishes;
 export const oneDish = (state: RootState) => state.dishes.dish;
+export const createLoadingSlice = (state: RootState) => state.dishes.isLoading.createLoading;
+export const getLoadingSlice = (state: RootState) => state.dishes.isLoading.getLoading;
+export const getOneDishLoadingSlice = (state: RootState) => state.dishes.isLoading.getOneDishLoading;
+export const editLoadingSlice = (state: RootState) => state.dishes.isLoading.editLoading;
 
 export const dishesSlice = createSlice({
   name: 'dishes',

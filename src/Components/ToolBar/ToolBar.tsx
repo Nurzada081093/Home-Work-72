@@ -84,7 +84,7 @@ const ToolBar = () => {
           <Box sx={{display: 'flex', flexShrink: 0, gap: 2, alignItems: 'center'}}>
           <NavLink to={'/admin/dishes'} style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Dishes</NavLink>
           <NavLink to={'admin/orders'}  style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Orders</NavLink>
-          <Badge badgeContent={orders.length} variant="solid" color="danger">
+          <Badge badgeContent={orders.length} variant="solid" color="danger" to={'/admin/orders'} component={NavLink}>
             <IconButton variant="soft" sx={{borderRadius: '50%'}}>
               <NotificationsIcon/>
             </IconButton>

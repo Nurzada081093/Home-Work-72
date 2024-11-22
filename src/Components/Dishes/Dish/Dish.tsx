@@ -5,7 +5,7 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
 import Typography from '@mui/joy/Typography';
 import { IDish } from '../../../types';
-import React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/joy/Box';
 import { Button } from '@mui/joy';
 import { RiDeleteBin6Fill } from '@react-icons/all-files/ri/RiDeleteBin6Fill';
@@ -14,6 +14,7 @@ import { FiEdit2 } from 'react-icons/fi';
 import { useAppDispatch } from '../../../app/hooks.ts';
 import { deleteDish, getDishes } from '../../../store/Thunks/dishesThunk.ts';
 import { toast } from 'react-toastify';
+import ButtonSpinner from '../../UI/ButtonSpinner/ButtonSpinner.tsx';
 
 interface Props {
   dish: IDish;
@@ -22,23 +23,30 @@ interface Props {
 const Dish: React.FC<Props> = ({dish}) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [deleteLoading, setDeleteLoading] = useState<{index: string | null; loading: boolean}>({
+    index: null,
+    loading: false,
+  });
 
   const deleteTheDish = async (id:string) => {
+    setDeleteLoading(prevState => ({...prevState, loading: true, index: id}));
     await dispatch(deleteDish(id));
     toast.success(`${dish.title} has been successfully deleted!`);
     await dispatch(getDishes());
+    setDeleteLoading(prevState => ({...prevState, loading: false, index: null}));
   };
 
   return (
     <Card variant="outlined" sx={{ width: 320, margin: '20px 5px'}}>
       <CardOverflow>
-        <AspectRatio ratio="2">
+        <AspectRatio>
           <img
             style={{
               width: '150px',
               height: '150px',
               marginLeft: '25%',
-              marginTop: '10px'
+              marginTop: '15px',
+              marginBottom: '10px'
             }}
             src={dish.image}
             srcSet={dish.image}
@@ -71,14 +79,14 @@ const Dish: React.FC<Props> = ({dish}) => {
               Edit
             </Button>
             <Button
-              // disabled={deleteLoader}
+              disabled={deleteLoading.loading && dish.id === deleteLoading.index}
               variant="solid"
               color="danger"
               startDecorator={<RiDeleteBin6Fill />}
               onClick={() => deleteTheDish(dish.id)}
             >
               Delete
-              {/*{deleteLoader ? <DeleteButtonSpinner/> : null}*/}
+              {deleteLoading.loading && dish.id === deleteLoading.index ? <ButtonSpinner/> : null}
             </Button>
           </Box>
         </CardContent>

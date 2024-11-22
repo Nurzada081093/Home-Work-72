@@ -6,6 +6,7 @@ import Orders from './Containers/Orders/Orders.tsx';
 import AddNewDish from './Containers/AddNewDish/AddNewDish.tsx';
 import EditDish from './Containers/EditDish/EditDish.tsx';
 import Home from './Containers/Home/Home.tsx';
+import './App.css';
 
 const App = () => {
 

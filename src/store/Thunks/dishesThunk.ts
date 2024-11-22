@@ -19,12 +19,14 @@ export const getDishes = createAsyncThunk<IDish[], void>(
       return [];
     }
 
-    return Object.keys(responseData).map((dishId) => {
+    const allDishes = Object.keys(responseData).map((dishId) => {
       return {
         ...responseData[dishId],
         id: dishId,
       };
     });
+
+    return allDishes.reverse();
   }
 );
 

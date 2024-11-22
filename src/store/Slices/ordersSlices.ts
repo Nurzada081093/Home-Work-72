@@ -27,6 +27,8 @@ const initialState: UserCartDishState = {
 
 export const userCards = (state: RootState) => state.orders.orders;
 export const userOrders = (state: RootState) => state.orders.ordersFromAPI;
+export const addLoadingSlice = (state: RootState) => state.orders.loading.createLoading;
+export const getLoadingSlice = (state: RootState) => state.orders.loading.getLoading;
 
 const ordersSlice = createSlice({
   name: 'orders',

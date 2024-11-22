@@ -3,6 +3,10 @@ import Grid from '@mui/material/Grid2';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { IFormDish } from '../../types';
 import { toast } from 'react-toastify';
+import { useAppSelector } from '../../app/hooks.ts';
+import { createLoadingSlice, editLoadingSlice } from '../../store/Slices/dishesSlice.ts';
+import ButtonSpinner from '../UI/ButtonSpinner/ButtonSpinner.tsx';
+import Box from '@mui/joy/Box';
 
 interface Props {
   onSubmitDish: (dish: IFormDish) => void;
@@ -18,6 +22,8 @@ const initialState = {
 
 const DishForm: React.FC<Props> = ({onSubmitDish, dishInitial = initialState, editDish = false}) => {
   const [newDish, setNewDish] = useState<IFormDish>(dishInitial);
+  const addLoading = useAppSelector(createLoadingSlice);
+  const editLoader = useAppSelector(editLoadingSlice);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
@@ -98,12 +104,28 @@ const DishForm: React.FC<Props> = ({onSubmitDish, dishInitial = initialState, ed
           />
         </Grid>
         <Grid size={12}>
+          <Box sx={{
+            border: '1px solid #bdbdbd',
+            borderRadius: '5px',
+            padding: '10px',
+            width: '100%',
+            display: 'flex',
+            flexWrap: 'wrap'
+          }}>
+            <Typography sx={{color: '#616161', fontSize: '17px', marginRight: '15%'}}>Photo preview</Typography>
+            <img style={{width: '200px', borderRadius: '10px'}}
+                 src={newDish.image}
+                 alt=""
+            />
+          </Box>
+        </Grid>
+        <Grid size={12}>
           <Button
-            // disabled={createLoading || editLoader}
+            disabled={addLoading || editLoader}
             sx={{width: '100%'}} variant="contained"
                   type="submit">
             Save
-            {/*{createLoading || editLoader ? <ButtonSpinner/> : null}*/}
+            {addLoading || editLoader ? <ButtonSpinner/> : null}
           </Button>
         </Grid>
       </Grid>

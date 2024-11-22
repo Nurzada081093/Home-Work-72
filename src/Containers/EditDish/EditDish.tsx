@@ -4,11 +4,13 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback, useEffect } from 'react';
 import { editDish, getOneDish } from '../../store/Thunks/dishesThunk.ts';
-import { oneDish } from '../../store/Slices/dishesSlice.ts';
+import { getOneDishLoadingSlice, oneDish } from '../../store/Slices/dishesSlice.ts';
 import { toast } from 'react-toastify';
+import Loader from '../../Components/UI/Loader/Loader.tsx';
 
 const EditDish = () => {
   const dish = useAppSelector(oneDish);
+  const oneDishLoading = useAppSelector(getOneDishLoadingSlice);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {id} = useParams();
@@ -32,9 +34,11 @@ const EditDish = () => {
   };
 
   return (
-    <div>
-      {dish && <DishForm onSubmitDish={onSubmitDish} dishInitial={dish} editDish/>}
-    </div>
+    <>
+      {oneDishLoading ? <Loader/> :
+        dish && <DishForm onSubmitDish={onSubmitDish} dishInitial={dish} editDish/>
+      }
+    </>
   );
 };
 

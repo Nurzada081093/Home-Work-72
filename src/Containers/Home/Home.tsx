@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import { allDishes } from '../../store/Slices/dishesSlice.ts';
+import { allDishes, getLoadingSlice } from '../../store/Slices/dishesSlice.ts';
 import { useCallback, useEffect, useState } from 'react';
 import { getDishes } from '../../store/Thunks/dishesThunk.ts';
 import { Container } from '@mui/joy';
@@ -13,11 +13,13 @@ import { useNavigate } from 'react-router-dom';
 import { IOrderDish } from '../../types';
 import { createOrder } from '../../store/Thunks/ordersThunks.ts';
 import { toast } from 'react-toastify';
+import Loader from '../../Components/UI/Loader/Loader.tsx';
 
 const Home = () => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const dishes = useAppSelector(allDishes);
   const cardWithDishes = useAppSelector(userCards);
+  const loading = useAppSelector(getLoadingSlice);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -55,17 +57,21 @@ const Home = () => {
   };
 
   return (
-    <Container>
-      <ModalWindow showModal={openModal} closeModal={closeModal} sendOrder={sendOrder}/>
-      <Box sx={{margin: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexWrap: 'wrap'}}>
-        <Typography sx={{fontSize: '25px'}}><b>Order total: </b> {totalPrise} KGS</Typography>
-        <Button variant="contained" size="large" onClick={openTheModalWindow} >
-          Checkout
-        </Button>
-      </Box>
-      <hr/>
-      <DishCards dishes={dishes}/>
-    </Container>
+    <>
+      {loading ? <Loader/> :
+        <Container>
+          <ModalWindow showModal={openModal} closeModal={closeModal} sendOrder={sendOrder}/>
+          <Box sx={{margin: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexWrap: 'wrap'}}>
+            <Typography sx={{fontSize: '25px'}}><b>Order total: </b> {totalPrise} KGS</Typography>
+            <Button variant="contained" size="large" onClick={openTheModalWindow} >
+              Checkout
+            </Button>
+          </Box>
+          <hr/>
+          <DishCards dishes={dishes}/>
+        </Container>
+      }
+    </>
   );
 };
 
