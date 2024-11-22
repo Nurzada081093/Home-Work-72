@@ -6,13 +6,26 @@ import IconButton from '@mui/joy/IconButton';
 import Sheet from '@mui/joy/Sheet';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Container } from '@mui/joy';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import { userOrders } from '../../store/Slices/ordersSlices.ts';
+import { getOrders } from '../../store/Thunks/ordersThunks.ts';
 
 const ToolBar = () => {
   const [color, setColor] = useState<ColorPaletteProp>('primary');
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector(userOrders);
+
+  const getAllOrders = useCallback(async () => {
+    await dispatch(getOrders());
+  },[dispatch]);
+
+  useEffect(() => {
+    void getAllOrders();
+  }, [getAllOrders]);
 
   return (
     <Sheet
@@ -71,7 +84,7 @@ const ToolBar = () => {
           <Box sx={{display: 'flex', flexShrink: 0, gap: 2, alignItems: 'center'}}>
           <NavLink to={'/admin/dishes'} style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Dishes</NavLink>
           <NavLink to={'admin/orders'}  style={{color: 'white', fontSize: '20px', textDecoration: 'none'}}>Orders</NavLink>
-          <Badge badgeContent={2} variant="solid" color="danger">
+          <Badge badgeContent={orders.length} variant="solid" color="danger">
             <IconButton variant="soft" sx={{borderRadius: '50%'}}>
               <NotificationsIcon/>
             </IconButton>

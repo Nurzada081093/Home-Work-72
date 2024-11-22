@@ -7,6 +7,7 @@ import { Typography } from '@mui/material';
 import { getDishes } from '../../store/Thunks/dishesThunk.ts';
 import { IDishOrders } from '../../types';
 import { allDishes } from '../../store/Slices/dishesSlice.ts';
+import OrderCards from '../../Components/OrderCards/OrderCards.tsx';
 
 const Orders = () => {
   const allOrders: IDishOrders[] = [];
@@ -40,12 +41,12 @@ const Orders = () => {
     allOrders.push(newOrder);
   });
 
-  console.log(allOrders);
-
   return (
     <Container>
-      <Typography variant="h3">Orders</Typography>
-      Все заказы!
+      <Typography variant="h3" sx={{margin: '20px 0 20px 30px'}}>Orders</Typography>
+      {allOrders.length !== 0 ? <OrderCards orders={allOrders}/>
+        :
+      <Typography variant="h4" sx={{margin: '50px auto', textAlign: 'center', fontStyle: 'italic'}}>You haven't orders at the moment!</Typography>}
     </Container>
   );
 };

@@ -28,3 +28,9 @@ export const getOrders = createAsyncThunk<APIOrder[], void>(
   }
 );
 
+export const deleteOrder = createAsyncThunk<void, string>(
+  'orders/deleteOrder',
+  async (id: string) => {
+    await axiosRequest.delete(`orders/${id}.json`);
+  }
+);

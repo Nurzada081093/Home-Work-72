@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { APIOrder, IDish, IDishOrder } from '../../types';
 import { RootState } from '../../app/store.ts';
-import { createOrder, getOrders } from '../Thunks/ordersThunks.ts';
+import { createOrder, deleteOrder, getOrders } from '../Thunks/ordersThunks.ts';
 
 interface UserCartDishState {
   orders: IDishOrder[];
@@ -9,6 +9,7 @@ interface UserCartDishState {
   loading: {
     createLoading: boolean;
     getLoading: boolean;
+    deleteLoading: boolean;
   };
   error: boolean;
 }
@@ -19,6 +20,7 @@ const initialState: UserCartDishState = {
   loading: {
     createLoading: false,
     getLoading: false,
+    deleteLoading: false,
   },
   error: false,
 };
@@ -99,10 +101,21 @@ const ordersSlice = createSlice({
       .addCase(getOrders.rejected, (state) => {
         state.loading.getLoading = false;
         state.error = true;
+      })
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading.deleteLoading = true;
+        state.error = false;
+      })
+      .addCase(deleteOrder.fulfilled, (state) => {
+        state.loading.deleteLoading = false;
+        state.error = false;
+      })
+      .addCase(deleteOrder.rejected, (state) => {
+        state.loading.deleteLoading = false;
+        state.error = true;
       });
   }
 });
-
 
 export const ordersReducer = ordersSlice.reducer;
 export const {dishCardToAdd, dishCardToDelete} = ordersSlice.actions;

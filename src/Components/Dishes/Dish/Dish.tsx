@@ -34,6 +34,12 @@ const Dish: React.FC<Props> = ({dish}) => {
       <CardOverflow>
         <AspectRatio ratio="2">
           <img
+            style={{
+              width: '150px',
+              height: '150px',
+              marginLeft: '25%',
+              marginTop: '10px'
+            }}
             src={dish.image}
             srcSet={dish.image}
             loading="lazy"

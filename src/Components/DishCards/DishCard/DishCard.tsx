@@ -17,7 +17,7 @@ const DishCard: React.FC<Props> = ({dish}) => {
   return (
     <>
       <Card variant="outlined" sx={{width: '280px', margin: '20px 5px', textAlign: 'center'}} onClick={() => dispatch(dishCardToAdd(dish))}>
-        <img style={{width: '100%', height: '150px'}} src={dish.image ? dish.image : image} alt={dish.title}/>
+        <img style={{width: '200px', height: '200px', margin: '0 auto'}} src={dish.image ? dish.image : image} alt={dish.title}/>
         <Typography sx={{width: '95%', fontSize: '25px', fontWeight: '600'}}>{dish.title}</Typography>
         <Button sx={{backgroundColor: '#3949ab', fontSize: '18px'}}>{dish.price} KGS</Button>
       </Card>
