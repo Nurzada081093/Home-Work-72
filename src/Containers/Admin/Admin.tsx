@@ -24,7 +24,7 @@ const Admin = () => {
 
   return (
     <Container>
-      <Box sx={{display: 'flex', justifyContent: 'space-between', margin: '50px 0 20px'}}>
+      <Box sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', margin: '50px 0 20px'}}>
         <Typography variant="h3">Dishes</Typography>
         <Button to={'/admin/addNewDish'} component={NavLink} startDecorator={<AddIcon/>} sx={{fontSize: '18px'}}>
           Add new Dish

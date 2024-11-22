@@ -25,3 +25,7 @@ export interface APIOrder {
   [id: string]: IOrderDish;
 }
 
+export interface IDishOrders {
+  id: string;
+  dishes: (IDish & { amount: number })[];
+}

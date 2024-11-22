@@ -18,6 +18,13 @@ export const getOrders = createAsyncThunk<APIOrder[], void>(
     if (responseData === null) {
       return [];
     }
-    return responseData;
+
+    return Object.keys(responseData).map((orderId) => {
+      return {
+        ...responseData[orderId],
+        id: orderId,
+      };
+    });
   }
 );
+

@@ -33,6 +33,7 @@ const ToolBar = () => {
       <Container sx={[
         {
           display: 'flex',
+          flexWrap: 'wrap',
           alignItems: 'center',
         },
       ]}>
